@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)file:///Users/michi/Downloads/index_7.html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="投資前ルール確認">
+<meta name="theme-color" content="#f0f4ff">
+<title>投資前ルール確認</title>
+<link rel="manifest" href="file:///Users/michi/Downloads/manifest.json">
+<link href="./index_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --bg-top: #e8eeff;
+    --bg-mid: #f0f7f4;
+    --bg-bottom: #fef9f0;
+    --accent: #3d6b8e;
+    --accent-light: #5a8aad;
+    --accent-pale: #ddeaf5;
+    --green: #2d7d5a;
+    --green-pale: #d4efe4;
+    --gold: #b07d2e;
+    --gold-pale: #fdf0d8;
+    --text-dark: #1a2330;
+    --text-mid: #3a4a5c;
+    --text-soft: #5a6a7a;
+    --text-muted: #8a9aaa;
+    --border: rgba(61, 107, 142, 0.15);
+    --border-mid: rgba(61, 107, 142, 0.25);
+    --white: #ffffff;
+    --card-bg: rgba(255,255,255,0.75);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: linear-gradient(160deg, var(--bg-top) 0%, var(--bg-mid) 50%, var(--bg-bottom) 100%);
+    background-attachment: fixed;
+    color: var(--text-dark);
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  .screen {
+    display: none;
+    min-height: 100vh;
+    min-height: 100dvh;
+    flex-direction: column;
+  }
+  .screen.active { display: flex; }
+
+  /* ── HEADER ── */
+  .header {
+    padding: 56px 24px 18px;
+    background: linear-gradient(180deg, rgba(232,238,255,0.9) 0%, transparent 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .header-title {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-dark);
+    font-family: 'Noto Serif JP', serif;
+    line-height: 1.4;
+  }
+  .header-date {
+    font-size: 12px;
+    color: var(--text-soft);
+    margin-top: 4px;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-bar-wrap {
+    padding: 14px 24px 0;
+  }
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--green) 100%);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .progress-label {
+    font-size: 11px;
+    color: var(--text-soft);
+    margin-top: 6px;
+    text-align: right;
+  }
+
+  /* ── ACCORDION LIST ── */
+  .rules-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 16px 110px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .rule-item {
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    transition: border-color 0.2s;
+  }
+  .rule-item.checked {
+    background: rgba(255,255,255,0.5);
+    border-color: rgba(45,125,90,0.2);
+  }
+
+  .rule-header {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    cursor: pointer;
+    user-select: none;
+    gap: 12px;
+  }
+
+  .rule-check {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid var(--text-muted);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    background: white;
+  }
+  .rule-item.checked .rule-check {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .rule-check-mark {
+    width: 10px;
+    height: 6px;
+    border-left: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(-45deg) translateY(-1px);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .rule-item.checked .rule-check-mark { opacity: 1; }
+
+  .rule-title-wrap { flex: 1; }
+  .rule-number {
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    margin-bottom: 2px;
+    font-weight: 500;
+  }
+  .rule-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-dark);
+    line-height: 1.4;
+    font-family: 'Noto Serif JP', serif;
+  }
+  .rule-item.checked .rule-title {
+    color: var(--text-muted);
+    text-decoration: line-through;
+    text-decoration-color: rgba(138,154,170,0.5);
+  }
+
+  .rule-chevron {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+    color: var(--text-muted);
+  }
+  .rule-item.open .rule-chevron { transform: rotate(180deg); }
+
+  .rule-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .rule-item.open .rule-body { max-height: 800px; }
+
+  .rule-content {
+    padding: 4px 16px 16px 52px;
+    border-top: 1px solid var(--border);
+    margin: 0 0 0 0;
+  }
+
+  .rule-reason {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.8;
+    margin: 12px 0 10px;
+    padding: 10px 12px;
+    background: var(--accent-pale);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent);
+  }
+
+  .rule-checklist {
+    list-style: none;
+    margin-top: 8px;
+  }
+  .rule-checklist li {
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 1.75;
+    padding: 4px 0 4px 18px;
+    position: relative;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .rule-checklist li:last-child { border-bottom: none; }
+  .rule-checklist li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 12px;
+    top: 6px;
+  }
+
+  /* ── BOTTOM CTA ── */
+  .bottom-cta {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 20px 40px;
+    background: linear-gradient(to top, rgba(240,244,255,0.98) 60%, transparent);
+  }
+  .cta-btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+  .cta-btn.disabled {
+    background: rgba(255,255,255,0.6);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    cursor: not-allowed;
+  }
+  .cta-btn.ready {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--green) 100%);
+    color: white;
+    box-shadow: 0 4px 20px rgba(61,107,142,0.3);
+  }
+  .cta-btn.ready:active { transform: scale(0.98); }
+  .cta-note {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  /* ── BRIEFING SCREEN ── */
+  .briefing-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+  }
+  .briefing-intro {
+    padding: 16px 0 14px;
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.8;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .msg {
+    max-width: 92%;
+    font-size: 14px;
+    line-height: 1.8;
+    padding: 12px 14px;
+    border-radius: 12px;
+  }
+  .msg.user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+  .msg.ai {
+    align-self: flex-start;
+    background: var(--card-bg);
+    color: var(--text-dark);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 4px;
+    backdrop-filter: blur(8px);
+  }
+  .msg.ai .ai-label {
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 6px;
+    display: block;
+    font-weight: 500;
+  }
+
+  .input-area {
+    padding: 10px 0 36px;
+    border-top: 1px solid var(--border);
+  }
+  .input-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+  }
+  .briefing-input {
+    flex: 1;
+    background: var(--white);
+    border: 1px solid var(--border-mid);
+    border-radius: 12px;
+    color: var(--text-dark);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    padding: 12px 14px;
+    resize: none;
+    min-height: 48px;
+    max-height: 120px;
+    outline: none;
+    line-height: 1.6;
+  }
+  .briefing-input::placeholder { color: var(--text-muted); }
+  .briefing-input:focus { border-color: var(--accent); }
+  .send-btn {
+    width: 46px;
+    height: 46px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--green) 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+    box-shadow: 0 2px 10px rgba(61,107,142,0.25);
+  }
+  .send-btn:active { transform: scale(0.95); }
+  .send-btn svg { width: 18px; height: 18px; fill: white; }
+  .send-btn:disabled { background: var(--border); box-shadow: none; cursor: not-allowed; }
+
+  .loading-dots {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    padding: 4px 0;
+  }
+  .loading-dots span {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: dot 1.2s infinite;
+    opacity: 0.3;
+  }
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes dot { 0%,80%,100%{opacity:0.2} 40%{opacity:0.9} }
+
+  .finish-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 14px;
+    background: white;
+    border: 1.5px solid var(--accent);
+    border-radius: 12px;
+    color: var(--accent);
+    font-family: 'Noto Serif JP', serif;
+    font-size: 14px;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .finish-btn:active { background: var(--accent-pale); }
+  .finish-btn.hidden { display: none; }
+
+  /* ── LAUNCH SCREEN ── */
+  .launch-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 28px;
+    text-align: center;
+    gap: 14px;
+  }
+  .launch-icon {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, var(--accent-pale) 0%, var(--green-pale) 100%);
+    border: 1px solid var(--border-mid);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 8px;
+  }
+  .launch-icon svg { width: 26px; height: 26px; stroke: var(--accent); fill: none; stroke-width: 1.8; }
+  .launch-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-dark);
+  }
+  .launch-subtitle {
+    font-size: 13px;
+    color: var(--text-soft);
+    line-height: 1.8;
+    max-width: 280px;
+  }
+  .launch-btn {
+    margin-top: 16px;
+    padding: 18px 48px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--green) 100%);
+    border: none;
+    border-radius: 14px;
+    color: white;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: all 0.2s;
+    box-shadow: 0 6px 24px rgba(61,107,142,0.3);
+  }
+  .launch-btn:active { transform: scale(0.97); }
+  .launch-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: -6px;
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--border-mid);
+    margin: 4px auto;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ SCREEN 1: RULES ═══ -->
+<div class="screen active" id="screen-rules">
+  <div class="header">
+    <div class="header-label">Morning Brief</div>
+    <div class="header-title">投資前ルール確認</div>
+    <div class="header-date" id="today-date">2026年5月16日（土）</div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="progress-label" id="progress-label">0 / 20 確認済み</div>
+  </div>
+  <div class="rules-list" id="rules-list"><div class="rule-item" id="rule-0">
+      <div class="rule-header" onclick="toggleRule(0)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 01</div>
+          <div class="rule-title">最優先ルール：大きく負けない</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">自分が把握していない銘柄は、買うポイントも売るポイントも分からない。値動きだけで入ると過去に大きく負けている。</div>
+          <ul class="rule-checklist"><li>事業内容・業績・テーマ性・材料を把握していない銘柄は買わない</li><li>「下がりすぎだからリバウンドしそう」という理由だけで買わない</li><li>「急に上がり始めたから乗りたい」という理由だけで買わない</li><li>セクター全体の急落後のリバウンド狙いを、即興で行わない</li><li>買う理由・売る理由・損切りラインが説明できない銘柄は買わない</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-1">
+      <div class="rule-header" onclick="toggleRule(1)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 02</div>
+          <div class="rule-title">決算またぎは基本的にしない</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">決算またぎは、上がる理由よりも下がる理由の方が多く、再現性が低い。期待してまたいだ結果、利益を飛ばした経験がある。</div>
+          <ul class="rule-checklist"><li>思惑だけの決算またぎは禁止</li><li>好決算でも、材料出尽くし・コンセンサス未達で下がることを前提に考える</li><li>決算前に含み益がある場合は、一部利確または全利確を検討する</li><li>決算は「結果」だけでなく「市場の反応」を見てから入ることを優先する</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-2">
+      <div class="rule-header" onclick="toggleRule(2)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 03</div>
+          <div class="rule-title">大きな賭けに出ない</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">自信がある時ほど、過去の大負けを思い出す。小さい勝ちを積み重ねる方が自分には合っている。</div>
+          <ul class="rule-checklist"><li>1銘柄に一気に300万〜400万円を入れない</li><li>1回のエントリーは原則100万円以下に抑える</li><li>できれば30万円前後から打診買いする</li><li>シナリオに自信がある銘柄でも、段階的に100万円程度までにする</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-3">
+      <div class="rule-header" onclick="toggleRule(3)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 04</div>
+          <div class="rule-title">追いかけ買いをしない</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">低いところで入れたのに、急騰後に追従買いして平均単価を上げ、その後の押しで含み損化することが多い。</div>
+          <ul class="rule-checklist"><li>安く買えた後に、すぐ追従買いしない</li><li>窓を開けて上がった銘柄を追いかけて買わない</li><li>追いかけ買いするくらいなら、利確を検討する</li><li>5%以上急騰した日は、基本的に買い増ししない</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-4">
+      <div class="rule-header" onclick="toggleRule(4)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 05</div>
+          <div class="rule-title">仕込みは平常心の時に行う</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">大きく勝とうとしすぎず、小さい勝ちを積み重ねる。</div>
+          <ul class="rule-checklist"><li>場中に焦って買わない</li><li>板や1分足を見て興奮している時は買わない</li><li>静かな時、横ばいの時、押し目の時に仕込む</li><li>5〜10%上がった時は、買うよりも放置または利確を考える</li><li>10万円程度の利益が出たら、一部利確も検討する</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-5">
+      <div class="rule-header" onclick="toggleRule(5)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 06</div>
+          <div class="rule-title">打診買いから入る</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">買った後に考えるのではなく、買う前に撤退条件を決める。</div>
+          <ul class="rule-checklist"><li>最初から本気買いしない</li><li>まずは100株、または30万円前後で入る</li><li>値動き・出来高・地合い・材料反応を見てから追加する</li><li>想定と違えばすぐ切る</li><li>打診買いの時点で損切りラインを決める</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-6">
+      <div class="rule-header" onclick="toggleRule(6)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 07</div>
+          <div class="rule-title">買う前に必ず確認すること</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">ファンダメンタルとチャートの両面から確認する。</div>
+          <ul class="rule-checklist"><li>株探で業績を確認する</li><li>売上・営業利益・EPSが伸びているか確認する</li><li>PER・PBRが業界内で高すぎないか確認する</li><li>短期線・中期線・長期線の並びを確認する</li><li>上昇トレンドか確認する</li><li>損切りラインをどこに置けるか確認する</li><li>出来高が急増しすぎていないか確認する</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-7">
+      <div class="rule-header" onclick="toggleRule(7)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 08</div>
+          <div class="rule-title">人から聞いた銘柄をすぐ買わない</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">人から聞いた銘柄は、入口は魅力的でも、出口を自分で決められないことが多い。</div>
+          <ul class="rule-checklist"><li>先輩・友人・詳しい人から聞いた銘柄をすぐ買わない</li><li>まずはウォッチリストに入れる</li><li>自分で調べる</li><li>自分の買いポイントまで待つ</li><li>自分のルールに合わなければ買わない</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-8">
+      <div class="rule-header" onclick="toggleRule(8)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 09</div>
+          <div class="rule-title">底当てゲームをしない</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">底を当てるのではなく、反転の兆しを確認してから入る。</div>
+          <ul class="rule-checklist"><li>落ちているナイフは触らない</li><li>下落中に「そろそろ底だろう」で買わない</li><li>下げ止まりを確認してから入る</li><li>下ひげ陽線・横ばい期間・出来高の変化を確認する</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-9">
+      <div class="rule-header" onclick="toggleRule(9)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 10</div>
+          <div class="rule-title">買うタイミングの基本ルール</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">「上昇トレンドの押し目買い」を基本とする。どこで買って、どこで切るか分かる形だけ入る。</div>
+          <ul class="rule-checklist"><li>短期線・中期線・長期線が上向きである</li><li>上昇トレンドの中の押し目である</li><li>どのラインで反発を狙うのか明確である</li><li>そのラインを割ったら損切りできる</li><li>地合いが極端に悪い時は無理に入らない</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-10">
+      <div class="rule-header" onclick="toggleRule(10)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 11</div>
+          <div class="rule-title">勝ちパターン：テーマ株の静かな仕込み</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">急騰中に飛び乗るのではなく、静かな時に仕込む。</div>
+          <ul class="rule-checklist"><li>旬のテーマに乗っている</li><li>過去に何度か急騰している</li><li>急騰後に落ち着いて横ばいになっている</li><li>直近に大きな決算リスクがない</li><li>ダウンサイドが限定的に見える</li><li>100万円程度までなら仕込む価値がある</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-11">
+      <div class="rule-header" onclick="toggleRule(11)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 12</div>
+          <div class="rule-title">ナンピンは原則しない</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">過去にナンピンで大きく痛い思いをしているため、基本は禁止。</div>
+          <ul class="rule-checklist"><li>想定と違う下落でナンピンしない</li><li>含み損を助けるためのナンピンはしない</li><li>長期線を割ったらナンピンではなく撤退を優先する</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-12">
+      <div class="rule-header" onclick="toggleRule(12)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 13</div>
+          <div class="rule-title">感情が動いている時は買わない</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">負けの多くは「値動きに反応してしまった時」「取り返したい時」に起きやすい。</div>
+          <ul class="rule-checklist"><li>悔しい時に買わない</li><li>取り返したい時に買わない</li><li>急騰を見て焦って買わない</li><li>損切り直後に別銘柄へ飛びつかない</li><li>「今日中に取り返したい」と思ったら、その日は新規買いしない</li><li>大きく勝った直後も、気が大きくなっているので買わない</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-13">
+      <div class="rule-header" onclick="toggleRule(13)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 14</div>
+          <div class="rule-title">寄り付き・PTSを信用しすぎない</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">PTSと本市場の動きは別物。特に決算後は、寄り付き前の期待と実際の需給が大きくズレることがある。</div>
+          <ul class="rule-checklist"><li>PTSで上がっていても、翌日の寄り付きで同じように上がるとは考えない</li><li>特買い・特売り・ギャップアップ直後に飛びつかない</li><li>最低でも5〜10分、できれば前場の流れを見て判断する</li><li>寄り付きで高く始まった銘柄は、押しを待つ</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-14">
+      <div class="rule-header" onclick="toggleRule(14)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 15</div>
+          <div class="rule-title">1日の中で無理に勝負しない</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">「何もしない」ことも立派な投資判断。</div>
+          <ul class="rule-checklist"><li>その日に買う理由がなければ買わない</li><li>チャンスがなければノートレードでよい</li><li>金曜日・決算集中日・重要イベント前は無理しない</li><li>相場全体が荒れている日は、ポジションを増やさない</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-15">
+      <div class="rule-header" onclick="toggleRule(15)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 16</div>
+          <div class="rule-title">ポジション管理ルール</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">リスクの分散と、含み益のある時の一部利確を意識する。</div>
+          <ul class="rule-checklist"><li>1銘柄に集中しすぎない</li><li>1銘柄300万円超えは原則避ける</li><li>テーマ株・小型株は100万円程度までを目安にする</li><li>高ボラ銘柄は30万円〜50万円程度から入る</li><li>含み益が出たら、一部利確してリスクを下げる</li><li>含み損が出たら、買い増しではなくシナリオ確認を優先する</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-16">
+      <div class="rule-header" onclick="toggleRule(16)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 17</div>
+          <div class="rule-title">損切りルール</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">損切りは負けではなく、次のチャンスに資金を残すための行動。</div>
+          <ul class="rule-checklist"><li>買う前に損切りラインを決める</li><li>決めたラインを明確に割ったら撤退する</li><li>想定と違う動きなら、含み損が小さいうちに切る</li><li>損切り後にすぐ買い直さない</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-17">
+      <div class="rule-header" onclick="toggleRule(17)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 18</div>
+          <div class="rule-title">利確ルール</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">「もっと取れた」は気にしない。「大きく負けなかった」を重視する。</div>
+          <ul class="rule-checklist"><li>短期で10万円程度の利益が出たら、一部利確を検討する</li><li>急騰して窓を開けたら、一部利確を検討する</li><li>決算前に含み益がある場合は利確を優先する</li><li>目標株価に近づいたら、欲張りすぎない</li><li>利確後にさらに上がっても後悔しない</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-18">
+      <div class="rule-header" onclick="toggleRule(18)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 19</div>
+          <div class="rule-title">自分に合う投資スタイル</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">業績・テーマ・チャートを確認して、押し目で小さく入り、強ければ伸ばす。</div>
+          <ul class="rule-checklist"><li>副業として続けられるスタイルにする</li><li>1分足や板に張り付かない</li><li>日足・週足ベースで判断する</li><li>夜眠れないポジションは持たない</li><li>ドキドキする投資はしない</li><li>勝率と再現性を重視する</li></ul>
+        </div>
+      </div></div><div class="rule-item" id="rule-19">
+      <div class="rule-header" onclick="toggleRule(19)">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE 20</div>
+          <div class="rule-title">値動きを見すぎない・時間管理を徹底する</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"></polyline>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">自分はデイトレーダーではなく、スイングまたは中長期の投資家。本業の時間や集中力を削るのは本末転倒。</div>
+          <ul class="rule-checklist"><li>毎分・毎秒の値動きチェックはしない</li><li>9:00〜10:00頃：寄り付き後の大まかな方向感を確認</li><li>11:30頃：前場終了時点での動きを確認</li><li>15:00〜15:30頃：大引け前後の動きと翌日に向けた判断</li><li>シナリオを持って買った銘柄は、短時間の値動きに振り回されない</li></ul>
+        </div>
+      </div></div></div>
+  <div class="bottom-cta">
+    <button class="cta-btn disabled" id="next-btn" onclick="goToBriefing()">すべて確認してから進む</button>
+    <div class="cta-note" id="cta-note">各項目を開いて閉じると確認済みになります</div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 2: AI BRIEFING ═══ -->
+<div class="screen" id="screen-briefing">
+  <div class="header">
+    <div class="header-label">Today's Briefing</div>
+    <div class="header-title">今日の状態を確認する</div>
+  </div>
+  <div class="briefing-wrap">
+    <div class="briefing-intro">
+      今日の気持ち、気になっている銘柄、やりそうな行動などを自由に話してください。マイルールに照らして見解をお伝えします。
+    </div>
+    <div class="chat-area" id="chat-area"></div>
+    <div class="input-area">
+      <div class="input-row">
+        <textarea class="briefing-input" id="briefing-input" placeholder="今日の状態、気になること…" rows="1" oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()">
+          <svg viewBox="0 0 16 16"><path d="M14 8L2 2l2 6-2 6 12-6z"></path></svg>
+        </button>
+      </div>
+      <button class="finish-btn hidden" id="finish-btn" onclick="goToLaunch()">確認完了 — 取引を開始する</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 3: LAUNCH ═══ -->
+<div class="screen" id="screen-launch">
+  <div class="launch-wrap">
+    <div class="launch-icon">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+    </div>
+    <div class="launch-title">準備完了</div>
+    <div class="divider"></div>
+    <div class="launch-subtitle">大きく勝とうとしない。大きく負けなければ、勝ちは積み重なる。</div>
+    <button class="launch-btn" onclick="openSBI()">SBIアプリを開く</button>
+    <div class="launch-note">SBI証券 スマートフォンサイトへ</div>
+  </div>
+</div>
+
+<script>
+const RULES = [
+  { num:'01', title:'最優先ルール：大きく負けない', reason:'自分が把握していない銘柄は、買うポイントも売るポイントも分からない。値動きだけで入ると過去に大きく負けている。', items:['事業内容・業績・テーマ性・材料を把握していない銘柄は買わない','「下がりすぎだからリバウンドしそう」という理由だけで買わない','「急に上がり始めたから乗りたい」という理由だけで買わない','セクター全体の急落後のリバウンド狙いを、即興で行わない','買う理由・売る理由・損切りラインが説明できない銘柄は買わない'] },
+  { num:'02', title:'決算またぎは基本的にしない', reason:'決算またぎは、上がる理由よりも下がる理由の方が多く、再現性が低い。期待してまたいだ結果、利益を飛ばした経験がある。', items:['思惑だけの決算またぎは禁止','好決算でも、材料出尽くし・コンセンサス未達で下がることを前提に考える','決算前に含み益がある場合は、一部利確または全利確を検討する','決算は「結果」だけでなく「市場の反応」を見てから入ることを優先する'] },
+  { num:'03', title:'大きな賭けに出ない', reason:'自信がある時ほど、過去の大負けを思い出す。小さい勝ちを積み重ねる方が自分には合っている。', items:['1銘柄に一気に300万〜400万円を入れない','1回のエントリーは原則100万円以下に抑える','できれば30万円前後から打診買いする','シナリオに自信がある銘柄でも、段階的に100万円程度までにする'] },
+  { num:'04', title:'追いかけ買いをしない', reason:'低いところで入れたのに、急騰後に追従買いして平均単価を上げ、その後の押しで含み損化することが多い。', items:['安く買えた後に、すぐ追従買いしない','窓を開けて上がった銘柄を追いかけて買わない','追いかけ買いするくらいなら、利確を検討する','5%以上急騰した日は、基本的に買い増ししない'] },
+  { num:'05', title:'仕込みは平常心の時に行う', reason:'大きく勝とうとしすぎず、小さい勝ちを積み重ねる。', items:['場中に焦って買わない','板や1分足を見て興奮している時は買わない','静かな時、横ばいの時、押し目の時に仕込む','5〜10%上がった時は、買うよりも放置または利確を考える','10万円程度の利益が出たら、一部利確も検討する'] },
+  { num:'06', title:'打診買いから入る', reason:'買った後に考えるのではなく、買う前に撤退条件を決める。', items:['最初から本気買いしない','まずは100株、または30万円前後で入る','値動き・出来高・地合い・材料反応を見てから追加する','想定と違えばすぐ切る','打診買いの時点で損切りラインを決める'] },
+  { num:'07', title:'買う前に必ず確認すること', reason:'ファンダメンタルとチャートの両面から確認する。', items:['株探で業績を確認する','売上・営業利益・EPSが伸びているか確認する','PER・PBRが業界内で高すぎないか確認する','短期線・中期線・長期線の並びを確認する','上昇トレンドか確認する','損切りラインをどこに置けるか確認する','出来高が急増しすぎていないか確認する'] },
+  { num:'08', title:'人から聞いた銘柄をすぐ買わない', reason:'人から聞いた銘柄は、入口は魅力的でも、出口を自分で決められないことが多い。', items:['先輩・友人・詳しい人から聞いた銘柄をすぐ買わない','まずはウォッチリストに入れる','自分で調べる','自分の買いポイントまで待つ','自分のルールに合わなければ買わない'] },
+  { num:'09', title:'底当てゲームをしない', reason:'底を当てるのではなく、反転の兆しを確認してから入る。', items:['落ちているナイフは触らない','下落中に「そろそろ底だろう」で買わない','下げ止まりを確認してから入る','下ひげ陽線・横ばい期間・出来高の変化を確認する'] },
+  { num:'10', title:'買うタイミングの基本ルール', reason:'「上昇トレンドの押し目買い」を基本とする。どこで買って、どこで切るか分かる形だけ入る。', items:['短期線・中期線・長期線が上向きである','上昇トレンドの中の押し目である','どのラインで反発を狙うのか明確である','そのラインを割ったら損切りできる','地合いが極端に悪い時は無理に入らない'] },
+  { num:'11', title:'勝ちパターン：テーマ株の静かな仕込み', reason:'急騰中に飛び乗るのではなく、静かな時に仕込む。', items:['旬のテーマに乗っている','過去に何度か急騰している','急騰後に落ち着いて横ばいになっている','直近に大きな決算リスクがない','ダウンサイドが限定的に見える','100万円程度までなら仕込む価値がある'] },
+  { num:'12', title:'ナンピンは原則しない', reason:'過去にナンピンで大きく痛い思いをしているため、基本は禁止。', items:['想定と違う下落でナンピンしない','含み損を助けるためのナンピンはしない','長期線を割ったらナンピンではなく撤退を優先する'] },
+  { num:'13', title:'感情が動いている時は買わない', reason:'負けの多くは「値動きに反応してしまった時」「取り返したい時」に起きやすい。', items:['悔しい時に買わない','取り返したい時に買わない','急騰を見て焦って買わない','損切り直後に別銘柄へ飛びつかない','「今日中に取り返したい」と思ったら、その日は新規買いしない','大きく勝った直後も、気が大きくなっているので買わない'] },
+  { num:'14', title:'寄り付き・PTSを信用しすぎない', reason:'PTSと本市場の動きは別物。特に決算後は、寄り付き前の期待と実際の需給が大きくズレることがある。', items:['PTSで上がっていても、翌日の寄り付きで同じように上がるとは考えない','特買い・特売り・ギャップアップ直後に飛びつかない','最低でも5〜10分、できれば前場の流れを見て判断する','寄り付きで高く始まった銘柄は、押しを待つ'] },
+  { num:'15', title:'1日の中で無理に勝負しない', reason:'「何もしない」ことも立派な投資判断。', items:['その日に買う理由がなければ買わない','チャンスがなければノートレードでよい','金曜日・決算集中日・重要イベント前は無理しない','相場全体が荒れている日は、ポジションを増やさない'] },
+  { num:'16', title:'ポジション管理ルール', reason:'リスクの分散と、含み益のある時の一部利確を意識する。', items:['1銘柄に集中しすぎない','1銘柄300万円超えは原則避ける','テーマ株・小型株は100万円程度までを目安にする','高ボラ銘柄は30万円〜50万円程度から入る','含み益が出たら、一部利確してリスクを下げる','含み損が出たら、買い増しではなくシナリオ確認を優先する'] },
+  { num:'17', title:'損切りルール', reason:'損切りは負けではなく、次のチャンスに資金を残すための行動。', items:['買う前に損切りラインを決める','決めたラインを明確に割ったら撤退する','想定と違う動きなら、含み損が小さいうちに切る','損切り後にすぐ買い直さない'] },
+  { num:'18', title:'利確ルール', reason:'「もっと取れた」は気にしない。「大きく負けなかった」を重視する。', items:['短期で10万円程度の利益が出たら、一部利確を検討する','急騰して窓を開けたら、一部利確を検討する','決算前に含み益がある場合は利確を優先する','目標株価に近づいたら、欲張りすぎない','利確後にさらに上がっても後悔しない'] },
+  { num:'19', title:'自分に合う投資スタイル', reason:'業績・テーマ・チャートを確認して、押し目で小さく入り、強ければ伸ばす。', items:['副業として続けられるスタイルにする','1分足や板に張り付かない','日足・週足ベースで判断する','夜眠れないポジションは持たない','ドキドキする投資はしない','勝率と再現性を重視する'] },
+  { num:'20', title:'値動きを見すぎない・時間管理を徹底する', reason:'自分はデイトレーダーではなく、スイングまたは中長期の投資家。本業の時間や集中力を削るのは本末転倒。', items:['毎分・毎秒の値動きチェックはしない','9:00〜10:00頃：寄り付き後の大まかな方向感を確認','11:30頃：前場終了時点での動きを確認','15:00〜15:30頃：大引け前後の動きと翌日に向けた判断','シナリオを持って買った銘柄は、短時間の値動きに振り回されない'] }
+];
+
+const SYSTEM_PROMPT = `あなたは個人投資家のパーソナルアドバイザーです。ユーザーは以下の厳格な投資マイルールを持っています。
+
+${RULES.map(r => `【${r.num}. ${r.title}】\n${r.items.join('、')}`).join('\n\n')}
+
+ユーザーが今日の気持ちや気になる銘柄、やりそうな行動を話してきます。以下の方針で対応してください：
+- マイルールに照らして、具体的なリスクや注意点を指摘する
+- 感情的にならず、落ち着いたアナリストのような口調で話す
+- 短く、的確に。長文は避ける。
+- 問題なければそのまま背中を押す。ルールに反しそうなら、どのルールに引っかかるかを明示する
+- 日本語で回答する`;
+
+let checkedCount = 0;
+const TOTAL = RULES.length;
+let messages = [];
+let isLoading = false;
+
+function init() {
+  if (document.getElementById('rules-list').children.length > 0) return;
+  const d = new Date();
+  const days = ['日','月','火','水','木','金','土'];
+  document.getElementById('today-date').textContent =
+    `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日（${days[d.getDay()]}）`;
+
+  const list = document.getElementById('rules-list');
+  RULES.forEach((rule, i) => {
+    const item = document.createElement('div');
+    item.className = 'rule-item';
+    item.id = `rule-${i}`;
+    item.innerHTML = `
+      <div class="rule-header" onclick="toggleRule(${i})">
+        <div class="rule-check"><div class="rule-check-mark"></div></div>
+        <div class="rule-title-wrap">
+          <div class="rule-number">RULE ${rule.num}</div>
+          <div class="rule-title">${rule.title}</div>
+        </div>
+        <svg class="rule-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4 6 8 10 12 6"/>
+        </svg>
+      </div>
+      <div class="rule-body">
+        <div class="rule-content">
+          <div class="rule-reason">${rule.reason}</div>
+          <ul class="rule-checklist">${rule.items.map(it => `<li>${it}</li>`).join('')}</ul>
+        </div>
+      </div>`;
+    list.appendChild(item);
+  });
+}
+
+function toggleRule(i) {
+  const item = document.getElementById('rule-' + i);
+  const wasOpen = item.classList.contains('open');
+
+  if (wasOpen) {
+    item.classList.remove('open');
+    if (!item.classList.contains('checked')) {
+      item.classList.add('checked');
+      checkedCount++;
+      updateProgress();
+    }
+  } else {
+    document.querySelectorAll('.rule-item.open').forEach(function(el) {
+      el.classList.remove('open');
+    });
+    item.classList.add('open');
+  }
+}
+
+function updateProgress() {
+  const pct = (checkedCount / TOTAL) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `${checkedCount} / ${TOTAL} 確認済み`;
+  const btn = document.getElementById('next-btn');
+  const note = document.getElementById('cta-note');
+  if (checkedCount === TOTAL) {
+    btn.className = 'cta-btn ready';
+    btn.textContent = '準備完了、始めよう →';
+    note.textContent = 'ボタンを押して取引を開始しましょう';
+  }
+}
+
+function goToBriefing() {
+  if (checkedCount < TOTAL) return;
+  document.getElementById('screen-rules').classList.remove('active');
+  document.getElementById('screen-launch').classList.add('active');
+}
+
+function goToLaunch() {
+  document.getElementById('screen-briefing').classList.remove('active');
+  document.getElementById('screen-launch').classList.add('active');
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function appendMsg(role, text) {
+  const area = document.getElementById('chat-area');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  if (role === 'ai') {
+    div.innerHTML = `<span class="ai-label">ANALYST</span>${text}`;
+  } else {
+    div.textContent = text;
+  }
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+function showLoading() {
+  const area = document.getElementById('chat-area');
+  const div = document.createElement('div');
+  div.className = 'msg ai';
+  div.id = 'loading-msg';
+  div.innerHTML = `<span class="ai-label">ANALYST</span><div class="loading-dots"><span></span><span></span><span></span></div>`;
+  area.appendChild(div);
+  area.scrollTop = area.scrollHeight;
+}
+
+async function sendMessage() {
+  const input = document.getElementById('briefing-input');
+  const text = input.value.trim();
+  if (!text || isLoading) return;
+  isLoading = true;
+  document.getElementById('send-btn').disabled = true;
+  input.value = '';
+  input.style.height = 'auto';
+  appendMsg('user', text);
+  messages.push({ role: 'user', content: text });
+  showLoading();
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: messages
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'エラーが発生しました。';
+    document.getElementById('loading-msg')?.remove();
+    appendMsg('ai', reply);
+    messages.push({ role: 'assistant', content: reply });
+    if (messages.length >= 2) {
+      document.getElementById('finish-btn').classList.remove('hidden');
+    }
+  } catch (e) {
+    document.getElementById('loading-msg')?.remove();
+    appendMsg('ai', 'エラーが発生しました。ネットワークを確認してください。');
+  }
+  isLoading = false;
+  document.getElementById('send-btn').disabled = false;
+}
+
+function openSBI() {
+  window.open('https://k.sbisec.co.jp/bsite/visitor/top.do', '_blank');
+}
+
+init();
+</script>
+
+
+</body></html>
